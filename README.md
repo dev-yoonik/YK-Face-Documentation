@@ -3,7 +3,7 @@
 
 # YooniK Face API Documentation
 
-[Get me a subscription](https://www.yoonik.me)
+[Get a subscription](https://www.yoonik.me)
 
 [Terms and Conditions](https://www.yoonik.me/terms-and-conditions)
 
