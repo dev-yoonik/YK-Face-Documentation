@@ -1,0 +1,464 @@
+swagger: '2.0'
+basePath: /v1.*/yoonik
+paths:
+  /face/process:
+    post:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/process_response'
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Given an image and a set of configuration parameters and minimal set of parameters return an array of Yoonik biometric object
+      operationId: post_process_resource
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/process_request'
+      tags:
+        - Face
+  /face/verify:
+    post:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/matching_result'
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Compares two templates and outputs a similarity score
+      operationId: post_verify_resource
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/verify_request'
+      tags:
+        - Face
+  /face/verify_id:
+    post:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/matching_result'
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '409':
+          description: It means that some object with the same id already exists.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Match template with a specific id in a gallery
+      operationId: post_verify_id_resource
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/verify_id_request'
+      tags:
+        - Face
+  /face/verify_images:
+    post:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/matching_result'
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '422':
+          description: Unprocessable Entity - Server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Compares two images and outputs a similarity score
+      operationId: post_verify_images_resource
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/verify_images'
+      tags:
+        - Face
+  /face/identify:
+    post:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/candidates'
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '409':
+          description: Invalid gallery id has been provided
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Search an identification template against the enrollment set of a specified gallery
+      operationId: post_identify_resource
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/identify_request'
+      tags:
+        - Face
+
+  /gallery/{gallery_id}:
+    parameters:
+      - description: Gallery name or identifier.
+        name: gallery_id
+        in: path
+        required: true
+        type: string
+    get:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/enrolled_ids'
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '404':
+          description: Gallery id not provided.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: List all enroled ids in a gallery
+      operationId: get_gallery_management_resources
+      tags:
+        - Gallery operations
+    post:
+      responses:
+        '204':
+          description: New gallery created in the gallery pool.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '404':
+          description: Gallery id not provided.
+        '409':
+          description: It means that some object with the same id already exists.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Add specified gallery
+      operationId: post_gallery_management_resources
+      tags:
+        - Gallery operations
+    delete:
+      responses:
+        '204':
+          description: Resource deleted successfully.
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '404':
+          description: Not Found
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Remove specified gallery
+      operationId: delete_gallery_management_resources
+      tags:
+        - Gallery operations
+  /gallery/{gallery_id}/{person_id}:
+    parameters:
+      - description: Gallery name or identifier.
+        name: gallery_id
+        in: path
+        required: true
+        type: string
+      - description: Person id
+        name: person_id
+        in: path
+        required: true
+        type: string
+    get:
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/template_request'
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '404':
+          description: Not Found
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Get a template from a gallery
+      operationId: get_template_gallery_management_resource
+      tags:
+        - Gallery operations
+    post:
+      responses:
+        '204':
+          description: Template added to gallery successfully.
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '404':
+          description: Not Found
+        '409':
+          description: It means that some object with the same id already exists.
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Insert a template into a gallery
+      operationId: post_template_gallery_management_resource
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/template_request'
+      tags:
+        - Gallery operations
+    delete:
+      responses:
+        '204':
+          description: Resource deleted sucessfully
+        '400':
+          description: BadRequest - Some field is missing or is invalid.
+        '401':
+          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
+        '404':
+          description: Not Found
+        '500':
+          description: InternalServerError - An internal error occurred
+      summary: Remove a specific template from a gallery
+      operationId: delete_template_gallery_management_resource
+      tags:
+        - Gallery operations
+info:
+  title: YooniK.Face API
+  version: '1.*'
+  description: This is the documentation to integrate directly with YooniK.Face authentication engine. The swagger describes the endpoints for integration for process (quality/liveness detection),  authentication/verification or identification scenarios. All images send to the server are imediately discarded after processing. For deployment on premises, please reach us using the contact information.
+  termsOfService: www.yoonik.me/terms-and-conditions
+  contact:
+    name: YooniK Support
+    email: support@yoonik.me
+produces:
+  - application/json
+consumes:
+  - application/json
+tags:
+  - name: Face
+    description: Yoonik.Face methods.
+  - name: Gallery operations
+    description: Biometric gallery methods.
+definitions:
+  process_request:
+    type: object
+    required:
+      - image
+    properties:
+      image:
+        type: string
+      processings:
+        description: Requested biometric processings.
+        type: array
+        items:
+          type: string
+          enum:
+            - detect
+            - analyze
+            - templify
+            - none
+        default:
+          - detect
+          - analyze
+          - templify
+      configuration:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Configuration name
+            value:
+              type: string
+              description: Configuration value
+        description: Extensible configurations for biometric processing.
+        default: []
+  process_response:
+    type: array
+    items:
+      type: object
+      properties:
+        biometric_type:
+          type: string
+        x:
+          description: detection center coordinate x
+          type: number
+          format: double
+        'y':
+          description: detection center coordinate y
+          type: number
+          format: double
+        width:
+          description: detection bounding box width
+          type: number
+          format: double
+        height:
+          description: detection bounding box width
+          type: number
+          format: double
+        Z:
+          description: detection center 3D coordinate Z
+          type: number
+          format: double
+        matching_score:
+          description: Matching score obtained with template_id person
+          type: number
+          format: double
+        template:
+          type: string
+          format: byte
+          description: Biometric template
+        template_version:
+          type: string
+          description: Template version
+        matching_image:
+          type: string
+          format: byte
+          description: Thumbnail/crop used for template extraction
+        tracking_id:
+          type: string
+          description: Tracking id. Available when processing video.
+        template_id:
+          type: string
+          description: Template Id
+        biometric_points:
+          type: array
+          items:
+            type: object
+            properties:
+              x:
+                type: integer
+                description: Point x coordinate.
+              'y':
+                type: integer
+                description: Point y coordinate.
+              name:
+                type: string
+                description: Point coordinate name
+        quality_metrics:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: number
+                format: double
+                description: Metric value.
+              enum:
+                type: string
+                description: String with metric value for enumerables.
+              bottom_threshold:
+                type: number
+                format: double
+                description: Bottom threshold.
+              top_threshold:
+                type: number
+                format: double
+                description: Top threshold.
+              test:
+                type: boolean
+                description: Metric test according to threshold.
+              name:
+                type: string
+                description: Metric name.
+  verify_request:
+    type: object
+    properties:
+      first_template:
+        type: string
+      second_template:
+        type: string
+  matching_result:
+    type: object
+    properties:
+      score:
+        type: number
+        format: double
+  verify_images:
+    type: object
+    required:
+      - first_image
+      - second_image
+    properties:
+      first_image:
+        type: string
+      second_image:
+        type: string
+  verify_id_request:
+    type: object
+    required:
+      - template
+      - template_id
+    properties:
+      template:
+        type: string
+      template_id:
+        type: string
+      gallery_id:
+        type: string
+  identify_request:
+    type: object
+    required:
+      - template
+    properties:
+      template:
+        type: string
+      candidate_list_length:
+        type: integer
+        minimum: 1
+        default: 1
+      minimum_score:
+        type: number
+        format: double
+        minimum: -1
+        default: -1
+      gallery_id:
+        type: string
+  candidates:
+    type: array
+    items:
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: Template Id from the enrollment gallery
+        score:
+          type: number
+          format: double
+          description: Result score from comparing the identification template to the enrolled candidate
+  enrolled_ids:
+    type: array
+    items:
+      type: string
+  template_request:
+    type: object
+    properties:
+      template:
+        type: string
