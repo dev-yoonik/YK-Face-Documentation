@@ -441,7 +441,7 @@ definitions:
         default: -1
       gallery_id:
         type: string
-  candidates:ww
+  candidates:
     type: array
     items:
       type: object
