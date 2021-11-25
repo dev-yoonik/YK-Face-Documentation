@@ -252,7 +252,7 @@ info:
   title: YooniK.Face API
   version: '1.*'
   description: This is the documentation to integrate directly with YooniK.Face authentication engine. The swagger describes the endpoints for integration for process (quality/liveness detection),  authentication/verification or identification scenarios. All images send to the server are imediately discarded after processing. For deployment on premises, please reach us using the contact information.
-  termsOfService: http://www.yoonik.me/terms-and-conditions
+  termsOfService: https://www.yoonik.me/terms-and-conditions
   contact:
     name: YooniK Support
     email: support@yoonik.me
