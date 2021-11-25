@@ -1,9 +1,9 @@
 
-![https://yoonik.me/wp-content/uploads/2019/08/cropped-LogoV4_TRANSPARENT.png](https://yoonik.me/wp-content/uploads/2019/08/cropped-LogoV4_TRANSPARENT.png)
+![https://yk-website-images.s3.eu-west-1.amazonaws.com/LogoV4_TRANSPARENT.png](https://yk-website-images.s3.eu-west-1.amazonaws.com/LogoV4_TRANSPARENT.png)
 
 # YooniK Face API Documentation
 
-[Get a subscription](https://www.yoonik.me)
+[Get a subscription](https://www.yoonik.me/pricing)
 
 [Terms and Conditions](https://www.yoonik.me/terms-and-conditions)
 
