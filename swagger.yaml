@@ -72,31 +72,6 @@ paths:
             $ref: '#/definitions/verify_id_request'
       tags:
         - Face
-  /face/verify_images:
-    post:
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/matching_result'
-        '400':
-          description: BadRequest - Some field is missing or is invalid.
-        '401':
-          description: Unauthorized - The request has not been applied because it lacks valid authentication credentials for the target resource.
-        '422':
-          description: Unprocessable Entity - Server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions.
-        '500':
-          description: InternalServerError - An internal error occurred
-      summary: Compares two images and outputs a similarity score
-      operationId: post_verify_images_resource
-      parameters:
-        - name: payload
-          required: true
-          in: body
-          schema:
-            $ref: '#/definitions/verify_images'
-      tags:
-        - Face
   /face/identify:
     post:
       responses:
