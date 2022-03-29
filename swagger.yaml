@@ -376,16 +376,6 @@ definitions:
       score:
         type: number
         format: double
-  verify_images:
-    type: object
-    required:
-      - first_image
-      - second_image
-    properties:
-      first_image:
-        type: string
-      second_image:
-        type: string
   verify_id_request:
     type: object
     required:
